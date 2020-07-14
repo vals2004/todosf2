@@ -47,6 +47,12 @@ class ToDo
      */
     private $state;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="todos")
+     */
+    private $owner;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,4 +117,29 @@ class ToDo
 
         return $this;
     }
+
+    /**
+     * Get owner.
+     *
+     * @return User
+     */
+    public function getOwner(): User
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set owner.
+     *
+     * @param User owner the value to set
+     *
+     * @return ToDo
+     */
+    public function setOwner(User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
 }

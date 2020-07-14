@@ -64,6 +64,13 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @var ToDo[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\ToDo", mappedBy="owner", cascade={"persist", "remove"})
+     */
+    private $todos; 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,5 +147,53 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     *  Get ToDos list.
+     *
+     * @return ArrayCollection
+     */
+    public function getToDos(): ?ArrayCollection
+    {
+        return $this->todos;
+    }
+
+    /**
+     * @param ToDo $toDo
+     *
+     * @return User
+     */
+    public function addToDo(ToDo $ToDo): self
+    {
+        if (false === $this->todos->contains($toDo)) {
+            $this->todos->add($toDo);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $toDos
+     *
+     * @return User
+     */
+    public function setToDos($toDos): self
+    {
+        $this->todos= $toDos;
+
+        return $this;
+    }
+
+    /**
+     * @param ToDo $toDo
+     *
+     * @return User
+     */
+    public function removeToDo(ToDo $toDo): self
+    {
+        $this->todos->removeElement($toDo);
+
+        return $this;
     }
 }
