@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "security"="is_granted('ROLE_ADMIN') or object == user"
  *          },
  *          "get_me"={
+ *              "method"="GET",
  *              "route_name"="api_users_get_me_item",
  *              "openapi_context"={
  *                  "summary"="Retrieves the current User resource.",
