@@ -7,10 +7,29 @@ use App\Repository\ToDoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\DBAL\Types\ToDoStateType;
 use Fresh\DoctrineEnumBundle\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=ToDoRepository::class)
+ * @ApiResource(
+ *      attributes={"security"="is_granted('ROLE_USER')"},
+ *      collectionOperations={
+ *          "post"
+ *      },
+ *      itemOperations={
+ *          "get"={
+ *              "security"="is_granted('ROLE_ADMIN') or object == user"
+ *          },
+ *          "delete"={
+ *              "security"="is_granted('ROLE_ADMIN') or object == user"
+ *          },
+ *          "patch"={
+ *              "security"="is_granted('ROLE_ADMIN') or object == user"
+ *          },
+ *      },
+ *      normalizationContext={"groups"={"read"}},
+ *      denormalizationContext={"groups"={"write"}}
+ * )
  */
 class ToDo
 {
@@ -18,38 +37,45 @@ class ToDo
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read", "write"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read", "write"})
      */
     private $summary;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read", "write"})
      */
     private $dueDate;
 
     /**
      * @ORM\Column(type="ToDoStateType", nullable=false)
      * @DoctrineAssert\Enum(entity="App\DBAL\Types\ToDoStateType")
+     * @Groups({"read", "write"})
      */
     private $state;
 
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="todos")
+     * @Groups({"read"})
      */
     private $owner;
 

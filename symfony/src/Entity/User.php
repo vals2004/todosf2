@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -69,6 +70,7 @@ class User implements UserInterface
      * @var ToDo[]|ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\ToDo", mappedBy="owner", cascade={"persist", "remove"})
+     * @ApiSubresource
      */
     private $todos; 
 
